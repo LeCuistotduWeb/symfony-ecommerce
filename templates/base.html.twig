@@ -8,6 +8,11 @@
 		<meta name="generator" content="Jekyll v4.1.1">
 		<title>{% block title %}CocoricoShop{% endblock %}</title>
 
+		{#icons fonts#}
+		<!-- choose one -->
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+
+
 		<!-- Bootstrap core CSS -->
 		<link href="{{asset('assets/css/bootstrap.min.css')}}" rel="stylesheet">
 
@@ -57,6 +62,9 @@
 						{% else %}
 							<a href="{{ path('app_login') }}">connection</a> | <a href="{{ path('register') }}">Inscription</a>
 						{% endif %}
+						<a class="ml-3" href="{{ path('cart') }}">
+							<i class="fas fa-shopping-basket"></i>
+						</a>
 					</div>
 				</div>
 			</nav>
@@ -79,7 +87,7 @@
 								<h1>Example headline.</h1>
 								<p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
 								<p>
-									<a class="btn btn-lg btn-primary" href="#" role="button">Sign up today</a>
+									<a class="btn btn-primary" href="#" role="button">Sign up today</a>
 								</p>
 							</div>
 						</div>
@@ -91,7 +99,7 @@
 								<h1>Another example headline.</h1>
 								<p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
 								<p>
-									<a class="btn btn-lg btn-primary" href="#" role="button">Learn more</a>
+									<a class="btn btn-primary" href="#" role="button">Learn more</a>
 								</p>
 							</div>
 						</div>
@@ -103,7 +111,7 @@
 								<h1>One more for good measure.</h1>
 								<p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
 								<p>
-									<a class="btn btn-lg btn-primary" href="#" role="button">Browse gallery</a>
+									<a class="btn btn-primary" href="#" role="button">Browse gallery</a>
 								</p>
 							</div>
 						</div>

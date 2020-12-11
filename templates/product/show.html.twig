@@ -15,7 +15,7 @@
             <div class="product-page-price">{{ (product.price / 100) | number_format(2,      ',', '.') }}€</div>
 
             <p>{{ product.description }}</p>
-            <button class="btn btn-primary">Ajouter</button>
+            <a href="{{ path('add_to_cart', {id: product.id}) }}" class="btn btn-primary" >Ajouter</a>
         </div>
     </div>
 {% endblock %}

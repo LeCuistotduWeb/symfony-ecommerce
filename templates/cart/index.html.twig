@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} | Mon panier{% endblock %}
+
+{% block content %}
+    <h1>mon panier</h1>
+
+    {% if cart is not empty %}
+        <table class="table">
+            <thead>
+            <th scope="col"></th>
+            <th scope="col">name</th>
+            <th scope="col">quantité</th>
+            <th scope="col">prix</th>
+            <th scope="col">total</th>
+            <th scope="col"></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% set total = null %}
+            {% for product in cart %}
+                {% set total = total + (product.product.price * product.quantity) %}
+                <tr>
+                    <td>
+                        <a href="{{ path('product', {slug: product.product.slug}) }}">
+                            <img height="150" src="/uploads/{{ product.product.thumbnail }}" alt="{{ product.product.name }}">
+                        </a>
+                    </td>
+                    <td>
+                        <a href="{{ path('product', {slug: product.product.slug}) }}">
+                            <div>{{ product.product.name }}</div>
+                            <div>{{ product.product.subtitle }}</div>
+                        </a>
+                    </td>
+                    <td>
+                        <a href="{{ path('decrease_to_cart', {id: product.product.id}) }}"><i class="fas fa-minus"></i></a>
+                        x{{ product.quantity }}
+                        <a href="{{ path('add_to_cart', {id: product.product.id}) }}"><i class="fas fa-plus"></i></a>
+                    </td>
+                    <td>{{ (product.product.price / 100) | number_format(2,      ',', '.') }}€</td>
+                    <td>{{ ((product.product.price * product.quantity) / 100) | number_format(2,      ',', '.') }}€</td>
+                    <td>
+                        <a href="{{ path('delete_to_cart', {id: product.product.id}) }}">
+                            <i class="fas fa-trash"></i>
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="text-right">
+            <strong>Nombre de produit : {{ cart | length }}</strong><br>
+            <strong>Total à payer: {{ (total / 100) | number_format(2,      ',', '.') }}€</strong>
+        </div>
+        <button class="btn btn-block btn-primary mt-3">payer</button>
+
+    {% else %}
+        <strong>vous n'avez aucun produit dans votre panier</strong>
+        <a href="{{ path('products') }}" class="btn btn-primary btn-block mt-5">Commencer mon shopping</a>
+    {% endif %}
+
+{% endblock %}
