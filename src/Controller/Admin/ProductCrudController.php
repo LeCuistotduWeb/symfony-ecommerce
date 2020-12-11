@@ -21,10 +21,15 @@ class ProductCrudController extends AbstractCrudController
 
     public function configureFields(string $pageName): iterable
     {
+        $filename = uniqid();
         return [
             TextField::new('name'),
             SlugField::new('slug')->setTargetFieldName('name'),
-            ImageField::new('thumbnail')->setUploadDir('/')->setUploadedFileNamePattern('[ramdomhash].[extension]')->setRequired(false),
+            ImageField::new('thumbnail')
+                ->setUploadDir('/public/uploads/')
+                ->setBasePath('/uploads/')
+                ->setUploadedFileNamePattern($filename.'.jpg')
+                ->setFormTypeOptions(['required' => false]),
             TextField::new('subtitle'),
             TextareaField::new('description'),
             MoneyField::new('price')->setCurrency('EUR'),
