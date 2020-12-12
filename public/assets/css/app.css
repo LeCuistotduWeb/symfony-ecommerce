@@ -31,8 +31,7 @@ body {
 .footer-custom {
     text-align: center;
     position: absolute;
-    bottom: 0;
     width: 100%;
-    background-color: #dfeaff;
+    background-color: #c6c6c6;
     padding-top: 25px;
 }
