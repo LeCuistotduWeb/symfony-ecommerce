@@ -8,10 +8,8 @@
 		<meta name="generator" content="Jekyll v4.1.1">
 		<title>{% block title %}CocoricoShop{% endblock %}</title>
 
-		{#icons fonts#}
 		<!-- choose one -->
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
-
 
 		<!-- Bootstrap core CSS -->
 		<link href="{{asset('assets/css/bootstrap.min.css')}}" rel="stylesheet">
@@ -33,9 +31,10 @@
 			}
 		</style>
 		<!-- Custom styles for this template -->
-<link href="{{asset('assets/css/carousel.css')}}" rel="stylesheet">
-<link href="{{asset('assets/css/app.css')}}" rel="stylesheet">
+		<link href="{{asset('assets/css/carousel.css')}}" rel="stylesheet">
+		<link href="{{asset('assets/css/app.css')}}" rel="stylesheet">
 
+		{% block javascript %}{% endblock %}
 	</head>
 	<body>
 		<header>
@@ -149,6 +148,6 @@
 		</main>
 		<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
         <script src="{{asset('assets/js/bootstrap.bundle.js')}}"></script>
-
 	</body>
+	{% block script %}{% endblock %}
 </html>

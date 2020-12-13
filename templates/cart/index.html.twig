@@ -51,7 +51,7 @@
 
         <div class="text-right">
             <strong>Nombre de produit : {{ cart | length }}</strong><br>
-            <strong>Total à payer: {{ (total / 100) | number_format(2,      ',', '.') }}€</strong>
+            <strong>Total: {{ (total / 100) | number_format(2,      ',', '.') }}€</strong>
         </div>
         <a href="{{ path('order') }}" class="btn btn-block btn-primary mt-3">payer</a>
 

@@ -1,5 +1,10 @@
 {% extends 'base.html.twig' %}
 
+{% block javascript %}
+<script src="https://polyfill.io/v3/polyfill.min.js?version=3.52.1&features=fetch"></script>
+<script src="https://js.stripe.com/v3/"></script>
+{% endblock %}
+
 {% block title %}{{ parent() }} | Ma commande{% endblock %}
 
 {% block content %}
@@ -16,14 +21,13 @@
                     </div>
                 </div>
             </div>
-            <hr>
-            <div class="">
+            <div class="mt-5">
                 <h2 class="h5">Choix du transporteur</h2>
                 <div class="card">
                     <div class="card-body">
                         {{ carrier.name }}<br>
                         {{ carrier.description }}<br>
-                        {{ (carrier.price) | number_format(2,      ',', '.')  }}€<br>
+                        {{ (carrier.price/100) | number_format(2,      ',', '.')  }}€<br>
                     </div>
                 </div>
             </div>
@@ -56,12 +60,46 @@
 
             <div class="my-3">
                 <strong>Sous-Total : {{ (total / 100) | number_format(2,      ',', '.') }}€</strong><br>
-                <strong>Livraison : {{ (carrier.price) | number_format(2,      ',', '.')  }}€</strong><br>
-                <strong>Total à payer: {{ ((total / 100) + carrier.price) | number_format(2,      ',', '.') }}€</strong>
+                <strong>Livraison : {{ (carrier.price/100) | number_format(2,      ',', '.')  }}€</strong><br>
+                <strong>Total à payer: {{ ((total / 100) + (carrier.price/100)) | number_format(2,      ',', '.') }}€</strong>
             </div>
 
-            <a class="btn btn-primary btn-block" href="#">Payer {{ ((total / 100) + carrier.price) | number_format(2,      ',', '.') }}€</a>
+            <button id="checkout-button" class="btn btn-primary btn-block">Payer {{ ((total / 100) + (carrier.price/100)) | number_format(2,',', '.') }}€</button>
 
         </div>
     </div>
+{% endblock %}
+
+{% block script %}
+    <script type="text/javascript">
+        // Create an instance of the Stripe object with your publishable API key
+        var stripe = Stripe("pk_test_51HxtVFB2WZBAOGI3C1Uv2HkYOIDfuPXzWBHfUOi78lSrzzMYOnuMe8iRxdkGyWVZmaYTXqKFAtvDqAJA2Cbwbv7M00btX9DjYj");
+        var checkoutButton = document.getElementById("checkout-button");
+        checkoutButton.addEventListener("click", function () {
+            fetch("/commande/create-session/{{ reference }}", {
+                method: "POST",
+            })
+                .then(function (response) {
+                    return response.json();
+                })
+                .then(function (session) {
+                    if(session.error == 'order'){
+                        window.location.replace('{{ path('order') }}');
+                    } else {
+                        return stripe.redirectToCheckout({ sessionId: session.id });
+                    }
+                })
+                .then(function (result) {
+                    // If redirectToCheckout fails due to a browser or network
+                    // error, you should display the localized error message to your
+                    // customer using error.message.
+                    if (result.error) {
+                        alert(result.error.message);
+                    }
+                })
+                .catch(function (error) {
+                    console.error("Error:", error);
+                });
+        });
+    </script>
 {% endblock %}

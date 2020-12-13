@@ -7,6 +7,8 @@ use App\Entity\Order;
 use App\Entity\OrderDetails;
 use App\Form\OrderType;
 use Doctrine\ORM\EntityManagerInterface;
+use Stripe\Checkout\Session;
+use Stripe\Stripe;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -72,9 +74,12 @@ class OrderController extends AbstractController
             $deliveryContent .= '<br/>'.$delivery->getPostal().' '.$delivery->getCity();
             $deliveryContent .= '<br/>'.$delivery->getCountry();
 
+            $reference = $date->format('dmY').'-'.uniqid();
+
             $order = new Order();
             $order->setUser($user);
             $order->setCreatedAt($date);
+            $order->setReference($reference);
             $order->setCarrierName($carriers->getName());
             $order->setCarrierPrice($carriers->getPrice());
             $order->setDelivery($deliveryContent);
@@ -98,8 +103,10 @@ class OrderController extends AbstractController
                 "cart"=> $cart->getFull(),
                 "carrier"=> $carriers,
                 "delivery"=> $deliveryContent,
+                "reference"=> $order->getReference(),
             ]);
         }
+
         return $this->redirectToRoute('cart');
     }
 }
