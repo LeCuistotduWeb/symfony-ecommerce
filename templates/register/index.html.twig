@@ -5,4 +5,9 @@
 {% block content %}
     <h1>Inscription</h1>
     {{ form(form) }}
+
+    <p class="mt-4 text-center">
+        Ou souhaitez-vous <a href="{{ path('app_login') }}">se connecter</a> ?
+    </p>
+
 {% endblock %}

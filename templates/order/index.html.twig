@@ -1,0 +1,73 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} | Ma commande{% endblock %}
+
+{% block content %}
+    <h1>Ma commande</h1>
+    <hr>
+    {{ form_start(form, {action:path('order_recap')}) }}
+    <div class="row">
+        <div class="col-md-7 col-lg-8">
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h2 class="h5">Addresse de livraison</h2>
+                    <div class="">
+                        {% set AddressFormHtml %}
+                            {{ form_row(form.addresses) }}
+                        {% endset%}
+                        {{ AddressFormHtml | replace({'[br]':'<br>'}) | raw }}
+
+                        <a href="{{ path('account_address_add') }}">Ajouter une nouvelle adresse</a>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="h5">Choix du transporteur</h2>
+                    <div class="">
+                        {% set carriersformHtml %}
+                            {{ form_row(form.carriers) }}
+                        {% endset%}
+                        {{ carriersformHtml | replace({'[br]':'<br>'}) | raw }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-5 col-lg-4">
+            <h2 class="h5 mt-md-0 mt-3">Récapitulatif :</h2>
+
+            {% set total = null %}
+            {% for key, product in cart %}
+                {% set total = total + (product.product.price * product.quantity) %}
+                <div class="card {% if key > 0 %}mt-2{% endif %}">
+                    <div class="card-body p-2">
+                        <div class="container">
+                            <div class="row align-items-center">
+                                <div class="col-3">
+                                    <a href="{{ path('product', {slug: product.product.slug}) }}">
+                                        <img class="img-fluid" height="90" src="/uploads/{{ product.product.thumbnail }}" alt="{{ product.product.name }}">
+                                    </a>
+                                </div>
+                                <div class="col-9">
+                                    <a href="{{ path('product', {slug: product.product.slug}) }}">{{ product.product.name }}</a>
+                                    <div class="quantity">x{{ product.quantity }}</div>
+                                    <p class="mb-0">{{ (product.product.price / 100) | number_format(2,',','.') }}€</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+
+            <div class="my-3">
+                <strong>Nombre de produit : {{ cart | length }}</strong><br>
+                <strong>Total à payer: {{ (total / 100) | number_format(2,      ',', '.') }}€</strong>
+            </div>
+
+            {#btn submit#}
+            {{ form_row(form.submit) }}
+
+        </div>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

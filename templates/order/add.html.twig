@@ -1,0 +1,67 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} | Ma commande{% endblock %}
+
+{% block content %}
+    <h1>Ma commande</h1>
+    <hr>
+
+    <div class="row mt-4">
+        <div class="col-md-7 col-lg-8">
+            <div class="mb-3">
+                <h2 class="h5">Addresse de livraison</h2>
+                <div class="card">
+                    <div class="card-body">
+                        {{ delivery|raw }}
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <div class="">
+                <h2 class="h5">Choix du transporteur</h2>
+                <div class="card">
+                    <div class="card-body">
+                        {{ carrier.name }}<br>
+                        {{ carrier.description }}<br>
+                        {{ (carrier.price) | number_format(2,      ',', '.')  }}€<br>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-5 col-lg-4">
+            <h2 class="h5 mt-md-0 mt-3">Récapitulatif :</h2>
+
+            {% set total = null %}
+            {% for key, product in cart %}
+                {% set total = total + (product.product.price * product.quantity) %}
+                <div class="card {% if key > 0 %}mt-2{% endif %}">
+                    <div class="card-body p-2">
+                        <div class="container">
+                            <div class="row align-items-center">
+                                <div class="col-3">
+                                    <a href="{{ path('product', {slug: product.product.slug}) }}">
+                                        <img class="img-fluid" height="90" src="/uploads/{{ product.product.thumbnail }}" alt="{{ product.product.name }}">
+                                    </a>
+                                </div>
+                                <div class="col-9">
+                                    <a href="{{ path('product', {slug: product.product.slug}) }}">{{ product.product.name }}</a>
+                                    <p class="mb-0">{{ (product.product.price / 100) | number_format(2,      ',', '.') }}€</p>
+                                    <div class="quantity">x{{ product.quantity }}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+
+            <div class="my-3">
+                <strong>Sous-Total : {{ (total / 100) | number_format(2,      ',', '.') }}€</strong><br>
+                <strong>Livraison : {{ (carrier.price) | number_format(2,      ',', '.')  }}€</strong><br>
+                <strong>Total à payer: {{ ((total / 100) + carrier.price) | number_format(2,      ',', '.') }}€</strong>
+            </div>
+
+            <a class="btn btn-primary btn-block" href="#">Payer {{ ((total / 100) + carrier.price) | number_format(2,      ',', '.') }}€</a>
+
+        </div>
+    </div>
+{% endblock %}

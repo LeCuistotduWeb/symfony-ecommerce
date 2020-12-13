@@ -53,7 +53,7 @@
             <strong>Nombre de produit : {{ cart | length }}</strong><br>
             <strong>Total à payer: {{ (total / 100) | number_format(2,      ',', '.') }}€</strong>
         </div>
-        <button class="btn btn-block btn-primary mt-3">payer</button>
+        <a href="{{ path('order') }}" class="btn btn-block btn-primary mt-3">payer</a>
 
     {% else %}
         <strong>vous n'avez aucun produit dans votre panier</strong>
