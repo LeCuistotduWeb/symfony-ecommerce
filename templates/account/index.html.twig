@@ -1,22 +1,23 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ parent() }} | mon compte{% endblock %}
+{% block title %}{{ parent() }} | Mon compte{% endblock %}
 
 {% block content %}
 
 <div class="example-wrapper">
-    <h1>Mon compte</h1>
+    <h1>Bonjour {{ app.user.firstname }}</h1>
     <hr>
 
-    <p>{{ app.user.firstname }}</p>
-    <p>{{ app.user.lastname }}</p>
+    <p>Information personnel:</p>
+    <p> {{ app.user.lastname }}</p>
+    <p></p>
     <p>{{ app.user.email }}</p>
 
     <hr>
 
     <p><a href="{{ path('account_password') }}">Modifier mon mot de passe</a></p>
     <p><a href="{{ path('account_address') }}">Gêrer mes adresses</a></p>
-    <p><a href="#">Mes commandes</a></p>
+    <p><a href="{{ path('account_order') }}">Mes commandes</a></p>
 
     <hr>
 </div>

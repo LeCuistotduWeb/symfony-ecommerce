@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} | Mes commandes{% endblock %}
+
+{% block content %}
+
+    <div class="example-wrapper">
+        <h1>Mes commandes</h1>
+        <a href="{{ path('account') }}">Retour</a>
+        <hr>
+
+        {% if orders is not empty %}
+            <div class="row mt-5">
+                {% for order in orders %}
+                {% set quantity = 0 %}
+                    <div class="col-12">
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <h4 class="card-title">reference : {{ order.reference }}</h4>
+                                <div>Commande passée le : {{ order.createdAt|date('d-m-Y') }}</div>
+
+                                {% for product in order.orderDetails %}
+                                    {% set quantity = quantity + product.getQuantity() %}
+                                {% endfor %}
+
+                                <div>Nb de produits : {{ quantity }}</div>
+
+                                <div>Prix total : {{ ((order.carrierPrice + order.getTotal)/100) | number_format(2,',','.') }}€</div>
+                                <a href="{{ path('account_order_show', {reference: order.reference}) }}">Détails</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="row mt-5">
+                <div class="col">
+                    <p>Vous n'avez pas encore de passé de commande. <a href="{{ path('products') }}">Commencez mon shopping</a></p>
+                </div>
+            </div>
+        {% endif %}
+
+    </div>
+{% endblock %}

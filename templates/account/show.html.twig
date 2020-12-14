@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} | Ma commande {{ order.reference }}{% endblock %}
+
+{% block content %}
+
+    <div class="example-wrapper">
+        <h1>Ma commande {{ order.reference }}</h1>
+        <a href="{{ path('account_order') }}">Retour</a>
+        <hr>
+
+        <div>Commande passée le : {{ order.createdAt|date('d-m-Y') }}</div>
+        <div>Référence : {{ order.reference }}</div>
+        <div>Transporteur : {{ order.carrierName }}</div>
+
+        <div class="row my-4">
+            {% for product in order.orderDetails %}
+                <div class="col-sm-4 col-md-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5>{{ product.product }}</h5>
+                            <div>Quantité : {{ product.quantity }}</div>
+                            <div>Prix unitaire : {{ (product.price/100) | number_format(2,',','.') }}€</div>
+                            <div>Total : {{ ((product.price/100)*product.quantity) | number_format(2,',','.') }}€</div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+
+        <div>Sous total : {{ (order.getTotal/100) | number_format(2,',','.') }}€</div>
+        <div>Livraison : {{ (order.carrierPrice/100) | number_format(2,',','.') }}€</div>
+        <div>Prix total : {{ ((order.carrierPrice + order.getTotal)/100) | number_format(2,',','.') }}€</div>
+
+    </div>
+{% endblock %}
